@@ -1,0 +1,39 @@
+:root {
+    --text: white;
+}
+
+body {
+    display: none;
+    background: black;
+}
+
+#main_container {
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    
+    display: flex;
+
+    border-radius: 20px;
+}
+
+#model_container {
+    width: 50%;
+    height: 100%;
+
+    background: white;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+#text_container {
+    width: 50%;
+    height: 100%;
+
+    background: red;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
