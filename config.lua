@@ -1,14 +1,21 @@
 Config = {
+
+    outline = {
+        color = { 255, 255, 255, 255 }, -- RGB + Alpha value
+        size = 1,
+        -- 0: normal
+        -- 1: small
+    },
     evidences = {
-        ["test"] = {
-            tags = { "police", "detective", "scientist" },
+        ["molester"] = {
+            tags = { "user" },
             model = "",
             prop = "prop_laptop_lester",
-            coords = vec3(-1386.9628, -528.4256, 30.8844),
+            coords = vec3(-1377.6697, -541.3762, 30.0768),
             text = {
-                title = "",
-                description = ""
+                title = "Lester the molester's laptop",
+                description = "This laptop appears to be covered in some strange white substance, it smells funny"
             }
-        }
+        },
     }
 }

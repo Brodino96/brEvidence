@@ -5,19 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>br_evidence</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <div id="main_container">
-
+        
         <div id="model_container">
             <div id="3d_model"></div>
         </div>
         
         <div id="text_container">
-
+            <div id="title_container">
+                <div id="title" class="generic_text">This is the Title</div>
+            </div>
+            <div id="description_container">
+                <div id="description" class="generic_text" markdown="1">This is a generic description for this 3d model </div>
+            </div>
+            <div id="footer">
+                <button id="close_button">Close</button>
+            </div>
         </div>
         
     </div>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.151.3/build/three.module.js",
+                "three/examples/jsm/controls/OrbitControls": "https://unpkg.com/three@0.151.3/examples/jsm/controls/OrbitControls.js",
+                "three/examples/jsm/loaders/GLTFLoader": "https://unpkg.com/three@0.151.3/examples/jsm/loaders/GLTFLoader.js",
+                "marked": "https://unpkg.com/marked@15.0.6/lib/marked.umd.js"
+            }
+        }
+    </script>
+    <script src="script.js" type="module"></script>
 </body>
-</html>
+</html> 
