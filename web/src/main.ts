@@ -1,15 +1,14 @@
 // --------------- IMPORTS --------------- \\
 
 import * as THREE from "three"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
-import { marked } from "marked"
+import { OrbitControls, GLTFLoader } from "three/examples/jsm/Addons.js"
 
 let rendering = false
 
 // --------------- MAIN EVENTS --------------- \\
 
 document.addEventListener("onload", () => {
+    //@ts-ignore
     fetch(`https://${GetParentResourceName()}/pageLoaded`, { method: "POST" })
 })
 
@@ -27,7 +26,7 @@ window.addEventListener("message", function(event) {
 
 // --------------- SCENE --------------- \\
 
-const container = document.getElementById("model_container")
+const container = document.getElementById("model_container")!
 const renderer = new THREE.WebGLRenderer({ antialias: true })
 const loader = new GLTFLoader()
 const scene = new THREE.Scene()
@@ -58,13 +57,13 @@ directionalLight.castShadow = false
 
 // --------------- FUNCTIONS --------------- \\
 
-function init(data) {
+function init(data: { model: string; title: string; description: string }) {
     rendering = true
     
     scene.add(ambientLight)
     scene.add(directionalLight)
     
-    loader.load(`./assets/${data.model}`, (gltf) => {
+    loader.load(`/${data.model}`, (gltf) => {
         scene.add(gltf.scene)
         
     }, undefined, (error) => {
@@ -73,8 +72,8 @@ function init(data) {
 
     animate()
 
-    document.getElementById("title").innerHTML = data.title
-    document.getElementById("description").innerHTML = data.description
+    document.getElementById("title")!.innerHTML = data.title
+    document.getElementById("description")!.innerHTML = data.description
 
     document.body.style.visibility = "visible"
 }
@@ -89,6 +88,7 @@ function animate() {
 }
 
 function closeUI() {
+    //@ts-ignore
     fetch(`https://${GetParentResourceName()}/closeUI`, { method: "POST" }).then(() => {
         document.body.style.display = "none"
         for (let i = 0; i < scene.children.length; i++) {
@@ -102,12 +102,12 @@ setTimeout(() => {
     init({
         model: "skull_downloadable.glb",
         title: "This is a title",
-        description: marked.parse( "This is a generic\ndescription for the 3d model on my left This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model ")
+        description: ( "This is a generic\ndescription for the 3d model on my left This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model ")
     })
 }, 0)
 
 // --------------- HANDLING BUTTONS --------------- \\
 
-document.getElementById("close_button").addEventListener("click", () => {
+document.getElementById("close_button")?.addEventListener("click", () => {
     closeUI()
 })

@@ -10,6 +10,6 @@ shared_scripts { "@ox_lib/init.lua", "config.lua", }
 server_scripts { "server/*", }
 client_scripts { "client/*", }
 
-ui_page "web/index.html"
+ui_page "web/dist/index.html"
 
-files { "web/*", "web/assets/*", }
+files { "web/dist/*", "web/dist/assets/*" }
