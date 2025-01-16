@@ -1,62 +1,5 @@
-// --------------- IMPORTS --------------- \\
-
 import * as THREE from "three"
 import { OrbitControls, GLTFLoader } from "three/examples/jsm/Addons.js"
-
-let rendering = false
-
-// --------------- MAIN EVENTS --------------- \\
-
-window.addEventListener("message", (event) => {
-    console.log(JSON.stringify(event.data))
-    if (event.data.action == "showUI") { init(event.data) }
-})
-
-// --------------- SCENE --------------- \\
-
-const container = document.getElementById("model_container")!
-const renderer = new THREE.WebGLRenderer({ antialias: true })
-const loader = new GLTFLoader()
-const scene = new THREE.Scene()
-renderer.setSize(container.clientWidth, container.clientHeight)
-renderer.setClearColor(0, 0)
-container.appendChild(renderer.domElement)
-
-const camera = new THREE.PerspectiveCamera(20, 1, 0.1, 1000)
-camera.position.z = 10
-
-const controls = new OrbitControls(camera, renderer.domElement)
-controls.enableDamping = true
-controls.dampingFactor = 0.05
-controls.rotateSpeed = 0.5
-controls.enablePan = false
-controls.enableZoom = false
-
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-directionalLight.position.set(5, 10, 7.5)
-directionalLight.castShadow = false
-
-// Shadows details
-// directionalLight.shadow.mapSize.width = 2048
-// directionalLight.shadow.mapSize.height = 2048
-// directionalLight.shadow.camera.near = 0.5
-// directionalLight.shadow.camera.far = 500
-
-// --------------- FUNCTIONS --------------- \\
-
-/*
-tags = { "user" },
-prop = "prop_laptop_lester",
-coords = vec3(-1377.4250, -535.4015, 30.2113),
-nui = {
-    model = "asus_rog_zephyrus_g14_2024.glb",
-    offset = vec3(0, -0.1, 0),
-    distance = 2,
-    title = "Lester the molester's laptop",
-    description = "This laptop appears to be covered in some strange white substance, it smells funny",
-},
-*/
 
 interface configData {
     model: string;
@@ -65,68 +8,115 @@ interface configData {
     title: string;
     description: string;
 }
-function init(data: configData) {
-    rendering = true
+
+class Main {
     
-    scene.add(ambientLight)
-    scene.add(directionalLight)
+    body: HTMLElement
+    rendering: boolean
+    container: HTMLElement
+    renderer: THREE.WebGLRenderer
+    loader: GLTFLoader
+    scene: THREE.Scene
+    camera: THREE.PerspectiveCamera
+    controls: OrbitControls
+    ambientLight: THREE.AmbientLight
+    directionalLight: THREE.DirectionalLight
     
-    loader.load(`./models/${data.model}`, (gltf) => {
-        let model = scene.add(gltf.scene)
-        model.position.x = data.offset.x
-        model.position.y = data.offset.y
-        model.position.z = data.offset.z
-    }, undefined, (error) => {
-        console.error(error)
-    })
+    constructor() {
+        this.body = document.body
+        this.rendering = false
+        this.container = document.getElementById("model_container")!
+        this.renderer = new THREE.WebGLRenderer({ antialias: true })
+        this.loader = new GLTFLoader()
+        this.scene = new THREE.Scene()
+        this.camera = new THREE.PerspectiveCamera(20, 1, 0.1, 1000)
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+        this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
 
-    camera.position.z = data.distance
-    camera.updateProjectionMatrix()
+        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight)
+        this.renderer.setClearColor(0, 0)
+        this.container.appendChild(this.renderer.domElement)
 
-    animate()
+        this.camera.position.z = 10 // default camera pos
 
-    const title = document.getElementById("title")!
-    const desc = document.getElementById("description")!
-    title.innerHTML = data.title
-    title.title = data.title
-    desc.innerHTML = data.description
+        this.controls.enableDamping = true
+        this.controls.dampingFactor = 0.05
+        this.controls.rotateSpeed = 0.5
+        this.controls.enablePan = false
+        this.controls.enableZoom = true
 
-    document.body.style.visibility = "visible"
-}
+        this.directionalLight.position.set(5, 10, 7.5)
+        this.directionalLight.castShadow = false
 
-function animate() {
-    if (!rendering) {
-        return
+        window.addEventListener("message", (event) => {
+            if (event.data.action == "showUI") { this.init(event.data) } 
+        })
+
+        document.getElementById("close_button")?.addEventListener("click", () => {
+            this.closeInterface()
+        })
     }
-    controls.update()
-    renderer.render(scene, camera)
-    requestAnimationFrame(animate)
+
+    animate = () => {
+        console.log(this.rendering)
+        if (!this.rendering) {
+            return
+        }
+        this.controls.update()
+        this.renderer.render(this.scene, this.camera)
+        requestAnimationFrame(this.animate)
+    }
+
+    init = (data: configData) => {
+        this.rendering = true
+    
+        this.scene.add(this.ambientLight)
+        this.scene.add(this.directionalLight)
+        
+        this.loader.load(`./models/${data.model}`, (gltf) => {
+            let model = this.scene.add(gltf.scene)
+            model.position.x = data.offset.x
+            model.position.y = data.offset.y
+            model.position.z = data.offset.z
+        }, undefined, (error) => {
+            console.error(error)
+        })
+    
+        this.camera.position.z = data.distance
+        this.camera.updateProjectionMatrix()
+    
+        this.animate()
+    
+        const title = document.getElementById("title")!
+        const desc = document.getElementById("description")!
+        title.innerHTML = data.title
+        title.title = data.title
+        desc.innerHTML = data.description
+    
+        document.body.style.visibility = "visible"
+    }
+
+    closeInterface = () => {
+        //@ts-ignore
+        fetch(`https://${GetParentResourceName()}/closeInterface`, { method: "POST" }).then(() => {
+            this.body.style.visibility = "hidden"
+            for (let i = 0; i < this.scene.children.length; i++) {
+                this.scene.remove(this.scene.children[i])
+            }
+            this.rendering = false
+        })
+    }
 }
 
-function closeUI() {
-    //@ts-ignore
-    fetch(`https://${GetParentResourceName()}/closeUI`, { method: "POST" }).then(() => {
-        document.body.style.visibility = "hidden"
-        for (let i = 0; i < scene.children.length; i++) {
-            scene.remove(scene.children[i])
-        }
-        rendering = false
-    })
-}
-const testData: configData = {
-    model: "asus_rog_zephyrus_g14_2024.glb",
-    offset: { x: 0, y: -0.1, z: 0 },
-    distance: 2,
-    title: "Laptop di Lester the Molester",
-    description: "Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
-}
+const main = new Main()
 
 setTimeout(() => {
-    init(testData)
+    main.init({
+        model: "asus_rog_zephyrus_g14_2024.glb",
+        offset: { x: 0, y: -0.1, z: 0 },
+        distance: 2,
+        title: "Laptop di Lester the Molester",
+        description: "Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
+    })
 }, 0)
-
-// --------------- HANDLING BUTTONS --------------- \\
-
-document.getElementById("close_button")?.addEventListener("click", () => {
-    closeUI()
-})
