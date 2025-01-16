@@ -12,4 +12,4 @@ client_scripts { "client/*", }
 
 ui_page "web/dist/index.html"
 
-files { "web/dist/*", "web/dist/assets/*" }
+files { "web/dist/*", "web/dist/assets/*", "web/dist/models/*", }
