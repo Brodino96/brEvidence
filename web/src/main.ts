@@ -63,7 +63,7 @@ function init(data: { model: string; title: string; description: string }) {
     scene.add(ambientLight)
     scene.add(directionalLight)
     
-    loader.load(`/${data.model}`, (gltf) => {
+    loader.load(`/models/${data.model}`, (gltf) => {
         scene.add(gltf.scene)
         
     }, undefined, (error) => {
