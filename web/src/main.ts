@@ -117,7 +117,7 @@ const testData: configData = {
     model: "asus_rog_zephyrus_g14_2024.glb",
     offset: { x: 0, y: -0.1, z: 0 },
     distance: 2,
-    title: "Laptop di Lester the Molester aaaaaaaaaaaaaaaaaaaaaaaaaa dknnawwldkawdlkam òdma wmdòaòwm òda",
+    title: "Laptop di Lester the Molester",
     description: "Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
 }
 
