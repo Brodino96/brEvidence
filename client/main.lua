@@ -76,11 +76,11 @@ local function init()
                     DisableControlAction(0, 51, true) -- E
                     DisableControlAction(0, 140, true) -- R
                     if IsDisabledControlJustPressed(0, 51) then -- E
-                        Action.interact(this)
+                        OpenUI(this)
                     end
 
                     if IsDisabledControlJustPressed(0, 140) then -- R
-                        Action.pickup(this)
+                        print(json.encode(this))
                     end
 
                 else

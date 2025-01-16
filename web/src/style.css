@@ -9,8 +9,6 @@
 body {
     display: block;
     visibility: hidden;
-    background-image: url("https://i.ytimg.com/vi/PSJkDqP6mX4/maxresdefault.jpg"); /* TO REMOVE */
-    background-size: cover; /* TO REMOVE */
 }
 
 .generic_text {
@@ -44,15 +42,8 @@ body {
 
     border-radius: 30px;
 
-    /* backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
     background-color: rgba(17, 25, 40, 0.75);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125); */
-
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(17, 25, 40, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 /* ------------------------------------------------ */
@@ -65,6 +56,13 @@ body {
     border-bottom-left-radius: 20px;
 }
 
+#model_container:hover {
+    cursor: grab;
+}
+#model_container:active {
+    cursor: grabbing;
+}
+
 /* ------------------------------------------------ */
 
 #text_container {
@@ -73,35 +71,36 @@ body {
 
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+}
 
-    display: flex;
-    flex-direction: column;
+#title_container {
+    background: green;
+    max-height: 25%;
 }
 
 #title {
-    padding-top: 1%;
-    padding-left: 2%;
-    font-size: 75px;
-}
-
-#description_container {
-    height: 80%;
+    font-size: 500%;
+    padding-left: 3%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #description {
-    height: 97%;
-    padding-top: 2%;
-    padding-left: 2%;
-    font-size: 225%;
-    overflow-y: scroll;
+    background: pink;
 }
 
+/* --------------------------------------------- */
+
 #footer {
-    position: relative;
-    height: 7%;
+    background: red;
+    width: 50%;
+    height: 12%;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 #close_button {

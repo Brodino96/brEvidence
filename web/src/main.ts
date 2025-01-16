@@ -7,21 +7,9 @@ let rendering = false
 
 // --------------- MAIN EVENTS --------------- \\
 
-document.addEventListener("onload", () => {
-    //@ts-ignore
-    fetch(`https://${GetParentResourceName()}/pageLoaded`, { method: "POST" })
-})
-
-window.addEventListener("message", function(event) {
-    const data = event.data
-    switch (data.action) {
-        case "showUI":
-            init(data)
-            break
-        default:
-            console.log("event arrived but nothing was specified")
-            break
-    }
+window.addEventListener("message", (event) => {
+    console.log(JSON.stringify(event.data))
+    if (event.data.action == "showUI") { init(event.data) }
 })
 
 // --------------- SCENE --------------- \\
@@ -57,23 +45,51 @@ directionalLight.castShadow = false
 
 // --------------- FUNCTIONS --------------- \\
 
-function init(data: { model: string; title: string; description: string }) {
+/*
+tags = { "user" },
+prop = "prop_laptop_lester",
+coords = vec3(-1377.4250, -535.4015, 30.2113),
+nui = {
+    model = "asus_rog_zephyrus_g14_2024.glb",
+    offset = vec3(0, -0.1, 0),
+    distance = 2,
+    title = "Lester the molester's laptop",
+    description = "This laptop appears to be covered in some strange white substance, it smells funny",
+},
+*/
+
+interface configData {
+    model: string;
+    offset: { x: number; y: number; z: number };
+    distance: number;
+    title: string;
+    description: string;
+}
+function init(data: configData) {
     rendering = true
     
     scene.add(ambientLight)
     scene.add(directionalLight)
     
-    loader.load(`/models/${data.model}`, (gltf) => {
-        scene.add(gltf.scene)
-        
+    loader.load(`./models/${data.model}`, (gltf) => {
+        let model = scene.add(gltf.scene)
+        model.position.x = data.offset.x
+        model.position.y = data.offset.y
+        model.position.z = data.offset.z
     }, undefined, (error) => {
         console.error(error)
     })
 
+    camera.position.z = data.distance
+    camera.updateProjectionMatrix()
+
     animate()
 
-    document.getElementById("title")!.innerHTML = data.title
-    document.getElementById("description")!.innerHTML = data.description
+    const title = document.getElementById("title")!
+    const desc = document.getElementById("description")!
+    title.innerHTML = data.title
+    title.title = data.title
+    desc.innerHTML = data.description
 
     document.body.style.visibility = "visible"
 }
@@ -90,20 +106,23 @@ function animate() {
 function closeUI() {
     //@ts-ignore
     fetch(`https://${GetParentResourceName()}/closeUI`, { method: "POST" }).then(() => {
-        document.body.style.display = "none"
+        document.body.style.visibility = "hidden"
         for (let i = 0; i < scene.children.length; i++) {
             scene.remove(scene.children[i])
         }
         rendering = false
     })
 }
+const testData: configData = {
+    model: "asus_rog_zephyrus_g14_2024.glb",
+    offset: { x: 0, y: -0.1, z: 0 },
+    distance: 2,
+    title: "Laptop di Lester the Molester aaaaaaaaaaaaaaaaaaaaaaaaaa dknnawwldkawdlkam òdma wmdòaòwm òda",
+    description: "Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
+}
 
 setTimeout(() => {
-    init({
-        model: "skull_downloadable.glb",
-        title: "This is a title",
-        description: ( "This is a generic\ndescription for the 3d model on my left This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model This is a generic description for this 3d model ")
-    })
+    init(testData)
 }, 0)
 
 // --------------- HANDLING BUTTONS --------------- \\
