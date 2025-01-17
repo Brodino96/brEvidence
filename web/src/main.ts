@@ -1,4 +1,4 @@
-import * as THREE from "three"
+import { WebGLRenderer, Scene, PerspectiveCamera, AmbientLight, DirectionalLight } from "three"
 import { OrbitControls, GLTFLoader } from "three/examples/jsm/Addons.js"
 import { Marked } from "@ts-stack/markdown"
 
@@ -23,13 +23,13 @@ class Main {
     body: HTMLElement
     rendering: boolean
     container: HTMLElement
-    renderer: THREE.WebGLRenderer
+    renderer: WebGLRenderer
     loader: GLTFLoader
-    scene: THREE.Scene
-    camera: THREE.PerspectiveCamera
+    scene: Scene
+    camera: PerspectiveCamera
     controls: OrbitControls
-    ambientLight: THREE.AmbientLight
-    directionalLight: THREE.DirectionalLight
+    ambientLight: AmbientLight
+    directionalLight: DirectionalLight
 
     defaultCameraPosition: number
     
@@ -37,13 +37,13 @@ class Main {
         this.body = document.body
         this.rendering = false
         this.container = document.getElementById("model")!
-        this.renderer = new THREE.WebGLRenderer({ antialias: true })
+        this.renderer = new WebGLRenderer({ antialias: true })
         this.loader = new GLTFLoader()
-        this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(20, 1, 0.1, 1000)
+        this.scene = new Scene()
+        this.camera = new PerspectiveCamera(20, 1, 0.1, 1000)
         this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-        this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+        this.ambientLight = new AmbientLight(0xffffff, 0.5)
+        this.directionalLight = new DirectionalLight(0xffffff, 1)
 
         this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight)
         this.renderer.setClearColor(0, 0)
@@ -63,12 +63,6 @@ class Main {
         document.getElementById("close")?.addEventListener("click", () => {
             this.closeInterface()
         })
-
-        // window.addEventListener("resize", () => {
-        //     this.camera.aspect = this.container.clientWidth / this.container.clientHeight
-        //     this.camera.updateProjectionMatrix()
-        //     this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, true)
-        // })
     }
 
     animate = () => {
@@ -110,7 +104,7 @@ class Main {
             desc.innerHTML = placeholder.description
         }
     
-        document.body.style.visibility = "visible"
+        this.body.style.visibility = "visible"
     }
 
     closeInterface = () => {
@@ -133,12 +127,12 @@ window.addEventListener("message", (event) => {
     if (event.data.action == "showInterface") { main.init(event.data.payload) } 
 })
 
-// setTimeout(() => {
-//     main.init({
-//         model: "asus_rog_zephyrus_g14_2024.glb",
-//         offset: { x: 0, y: -0.1, z: 0 },
-//         distance: 1.5,
-//         title: "Laptop di Lester the Molester",
-//         description: "Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra",
-//     })
-// }, 0)
+setTimeout(() => {
+    main.init({
+        model: "asus_rog_zephyrus_g14_2024.glb",
+        offset: { x: 0, y: -0.1, z: 0 },
+        distance: 1.5,
+        title: "Laptop di Lester the Molester",
+        description: "Questo laptop sembrerebbe appartenere ad un certo **Lester**, non sappiamo molto su di lui ma a quanto pare ha aiutato la __banda__ a fuggire dal penitenziario.",
+    })
+}, 0)

@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
 :root {
-    --font: arial;
+    --font: Outfit;
     --text: white;
     --scrollbar: #636468;
     --background: rgba(17, 25, 40, 0.85 );
@@ -52,14 +54,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background: red; */
 }
 
 #title {
     font-size: 100px;
-    font-weight: bold;
     overflow: hidden;
     white-space: nowrap;
+    font-weight: 6000;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -73,7 +74,6 @@ body {
 #model {
     width: 100%;
     height: 100%;
-    /* background-color: blueviolet; */
 }
 
 #model:hover { cursor: grab; }
@@ -86,17 +86,15 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* background-color: orange; */
 }
 
 #description {
     width: 90%;
     height: 90%;
     overflow: scroll;
-    font-size: 30px;
+    font-size: 40px;
     line-height: 1.2;
-    text-align: center;
-    /* background: rgba(255, 0, 0, 0.5); */
+    text-align: justify;
 }
 
 #description p {
@@ -104,13 +102,13 @@ body {
 }
 
 #divider {
-    background: white;
+    background: var(--text);
     position: absolute;
     top: 54%;
     transform: translate(0, -50%);
     border-radius: 100px;
     height: 600px;
-    width: 0.2%;
+    width: 0.15%;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -120,10 +118,10 @@ body {
     height: 10%;
     display: flex;
     justify-content: center;
-    /* background: green; */
 }
 
 #close {
+    transform: translateX(-10px);
     align-items: center;
     background-color: transparent;
     color: var(--text);
@@ -151,8 +149,8 @@ body {
 }
 
 #close:hover:before {
-background-color: #fff;
-width: 3rem;
+    background-color: #fff;
+    width: 3rem;
 }
 
 /* ------------------------------------------------------------------------- */
