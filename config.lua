@@ -16,7 +16,7 @@ Config = {
                 model = "asus_rog_zephyrus_g14_2024.glb",
                 offset = vec3(0, -0.1, 0),
                 distance = 2,
-                title = "Strano Lapotp",
+                title = "Laptop di Lester the Molester",
                 description = "Questo laptop sembrerebbe appartenere ad un certo **Lester**, non sappiamo molto su di lui ma a quanto pare ha aiutato la __banda__ a fuggire dal penitenziario.",
             },
         },
