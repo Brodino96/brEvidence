@@ -96,7 +96,14 @@ local function init()
     end)
 end
 
-init()
+RegisterNetEvent("esx:playerLoaded")
+AddEventHandler("esx:playerLoaded", function ()
+    init()
+end)
+
+if PlayerPedId() then
+    init()
+end
 
 RegisterNetEvent("onResourceStop")
 AddEventHandler("onResourceStop", function (name)

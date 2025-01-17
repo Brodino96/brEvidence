@@ -3,11 +3,19 @@ import { OrbitControls, GLTFLoader } from "three/examples/jsm/Addons.js"
 import { Marked } from "@ts-stack/markdown"
 
 interface configData {
-    model: string;
-    offset: { x: number; y: number; z: number };
-    distance: number;
-    title: string;
-    description: string;
+    model: string|null;
+    offset: { x: number|null; y: number|null; z: number|null };
+    distance: number|null;
+    title: string|null;
+    description: string|null;
+}
+
+const placeholder = {
+    model: "skull_downloadable.glb",
+    offset: { x: 0, y: 0, z: 0 },
+    distance: 10,
+    title: "This is a title",
+    description: "This is a description",
 }
 
 class Main {
@@ -22,11 +30,13 @@ class Main {
     controls: OrbitControls
     ambientLight: THREE.AmbientLight
     directionalLight: THREE.DirectionalLight
+
+    defaultCameraPosition: number
     
     constructor() {
         this.body = document.body
         this.rendering = false
-        this.container = document.getElementById("modelSpace")!
+        this.container = document.getElementById("model")!
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
         this.loader = new GLTFLoader()
         this.scene = new THREE.Scene()
@@ -35,30 +45,30 @@ class Main {
         this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
         this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
 
-        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight)
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight)
         this.renderer.setClearColor(0, 0)
         this.container.appendChild(this.renderer.domElement)
 
-        this.camera.position.z = 10 // default camera pos
+        this.defaultCameraPosition = 10 // default camera pos
 
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.05
         this.controls.rotateSpeed = 0.5
         this.controls.enablePan = false
-        this.controls.enableZoom = true
+        this.controls.enableZoom = false
 
         this.directionalLight.position.set(5, 10, 7.5)
         this.directionalLight.castShadow = false
 
-        document.getElementById("close_button")?.addEventListener("click", () => {
+        document.getElementById("close")?.addEventListener("click", () => {
             this.closeInterface()
         })
 
-        window.addEventListener("resize", () => {
-            this.camera.aspect = this.container.clientWidth / this.container.clientHeight
-            this.camera.updateProjectionMatrix()
-            this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, true)
-        })
+        // window.addEventListener("resize", () => {
+        //     this.camera.aspect = this.container.clientWidth / this.container.clientHeight
+        //     this.camera.updateProjectionMatrix()
+        //     this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, true)
+        // })
     }
 
     animate = () => {
@@ -76,25 +86,29 @@ class Main {
         this.scene.add(this.ambientLight)
         this.scene.add(this.directionalLight)
         
-        this.loader.load(`./models/${data.model}`, (gltf) => {
+        let modelToLoad: string = data.model ?? placeholder.model
+        this.loader.load(`./models/${modelToLoad}`, (gltf) => {
             let model = this.scene.add(gltf.scene)
-            model.position.x = data.offset.x
-            model.position.y = data.offset.y
-            model.position.z = data.offset.z
+                model.position.x = data.offset.x ?? placeholder.offset.x
+                model.position.y = data.offset.y ?? placeholder.offset.y
+                model.position.z = data.offset.z ?? placeholder.offset.z
         }, undefined, (error) => {
             console.error(error)
         })
-    
-        this.camera.position.z = data.distance
+
+        this.camera.position.z = data.distance ?? placeholder.distance
         this.camera.updateProjectionMatrix()
-    
         this.animate()
     
         const title = document.getElementById("title")!
         const desc = document.getElementById("description")!
-        title.innerHTML = data.title
-        title.title = data.title
-        desc.innerHTML = Marked.parse(data.description)
+        title.innerHTML = data.title ?? placeholder.title
+        title.title = data.title ?? placeholder.title
+        if (data.description) {
+            desc.innerHTML = Marked.parse(data.description)
+        } else {
+            desc.innerHTML = placeholder.description
+        }
     
         document.body.style.visibility = "visible"
     }
@@ -116,15 +130,15 @@ class Main {
 const main = new Main()
 
 window.addEventListener("message", (event) => {
-    if (event.data.action == "showInterface") { main.init(event.data) } 
+    if (event.data.action == "showInterface") { main.init(event.data.payload) } 
 })
 
-setTimeout(() => {
-    main.init({
-        model: "asus_rog_zephyrus_g14_2024.glb",
-        offset: { x: 0, y: -0.1, z: 0 },
-        distance: 2,
-        title: "Laptop di Lester the Molester",
-        description: " Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
-    })
-}, 0)
+// setTimeout(() => {
+//     main.init({
+//         model: "asus_rog_zephyrus_g14_2024.glb",
+//         offset: { x: 0, y: -0.1, z: 0 },
+//         distance: 1.5,
+//         title: "Laptop di Lester the Molester",
+//         description: "Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra",
+//     })
+// }, 0)
