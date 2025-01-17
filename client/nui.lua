@@ -1,7 +1,7 @@
 function OpenUI(data)
     TriggerScreenblurFadeIn(500)
     SendNUIMessage({
-        action = "showUI",
+        action = "showInterface",
         model = data.nui.model,
         offset = {
             x = data.nui.offset.x,
@@ -15,7 +15,7 @@ function OpenUI(data)
     SetNuiFocus(true, true)
 end
 
-RegisterNUICallback("closeUI", function (body, cb)
+RegisterNUICallback("closeInterface", function (body, cb)
     cb(SetNuiFocus(false, false))
     TriggerScreenblurFadeOut(500)
 end)

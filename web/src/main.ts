@@ -1,5 +1,6 @@
 import * as THREE from "three"
 import { OrbitControls, GLTFLoader } from "three/examples/jsm/Addons.js"
+import { Marked } from "@ts-stack/markdown"
 
 interface configData {
     model: string;
@@ -25,7 +26,7 @@ class Main {
     constructor() {
         this.body = document.body
         this.rendering = false
-        this.container = document.getElementById("model_container")!
+        this.container = document.getElementById("modelSpace")!
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
         this.loader = new GLTFLoader()
         this.scene = new THREE.Scene()
@@ -34,6 +35,12 @@ class Main {
         this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
         this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
 
+        window.addEventListener("resize", ()=>{
+            this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, false);
+        })
+       
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight)
         this.renderer.setClearColor(0, 0)
         this.container.appendChild(this.renderer.domElement)
@@ -49,17 +56,12 @@ class Main {
         this.directionalLight.position.set(5, 10, 7.5)
         this.directionalLight.castShadow = false
 
-        window.addEventListener("message", (event) => {
-            if (event.data.action == "showUI") { this.init(event.data) } 
-        })
-
         document.getElementById("close_button")?.addEventListener("click", () => {
             this.closeInterface()
         })
     }
 
     animate = () => {
-        console.log(this.rendering)
         if (!this.rendering) {
             return
         }
@@ -92,7 +94,7 @@ class Main {
         const desc = document.getElementById("description")!
         title.innerHTML = data.title
         title.title = data.title
-        desc.innerHTML = data.description
+        desc.innerHTML = Marked.parse(data.description)
     
         document.body.style.visibility = "visible"
     }
@@ -105,11 +107,17 @@ class Main {
                 this.scene.remove(this.scene.children[i])
             }
             this.rendering = false
+        }).catch(() => {
+            this.closeInterface()
         })
     }
 }
 
 const main = new Main()
+
+window.addEventListener("message", (event) => {
+    if (event.data.action == "showInterface") { main.init(event.data) } 
+})
 
 setTimeout(() => {
     main.init({
@@ -117,6 +125,6 @@ setTimeout(() => {
         offset: { x: 0, y: -0.1, z: 0 },
         distance: 2,
         title: "Laptop di Lester the Molester",
-        description: "Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
+        description: " Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo **portatile** ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra Questo portatile ha un non so che di strano, sembra essere coperta da una sostanza appiccicosa biancastra"
     })
 }, 0)

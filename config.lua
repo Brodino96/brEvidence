@@ -7,6 +7,7 @@ Config = {
         -- 1: small
     },
     evidences = {
+
         ["molester"] = {
             tags = { "user" },
             prop = "prop_laptop_lester",
