@@ -35,12 +35,6 @@ class Main {
         this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
         this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
 
-        window.addEventListener("resize", ()=>{
-            this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
-            this.camera.updateProjectionMatrix();
-            this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, false);
-        })
-       
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight)
         this.renderer.setClearColor(0, 0)
         this.container.appendChild(this.renderer.domElement)
@@ -58,6 +52,12 @@ class Main {
 
         document.getElementById("close_button")?.addEventListener("click", () => {
             this.closeInterface()
+        })
+
+        window.addEventListener("resize", () => {
+            this.camera.aspect = this.container.clientWidth / this.container.clientHeight
+            this.camera.updateProjectionMatrix()
+            this.renderer.setSize(this.container.clientWidth, this.container.clientHeight, true)
         })
     }
 

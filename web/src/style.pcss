@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background: url("https://img.gta5-mods.com/q95/images/police-center-paleto-bay-ymap-fivem/149af8-police.jpg")
-}
-
-/* ------------------------------------------------------------------------- */
-/* 
 :root {
     --font: ui-sans-serif;
     --text: white;
@@ -16,6 +10,30 @@ body {
 
     --background: rgba(17, 25, 40, 0.75);
 }
+
+
+body {
+    background: url("https://img.gta5-mods.com/q95/images/police-center-paleto-bay-ymap-fivem/149af8-police.jpg")
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px }
+::-webkit-scrollbar-button { width: 0; height: 0; }
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar);
+    border-radius: 50px; 
+    :hover { background:  var(--scrollbar); }
+    :active { background:  var(--scrollbar); }
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 50px;
+    :hover { background: transparent; }
+    :active { background: transparent; }
+}
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* ------------------------------------------------------------------------- */
+/* 
 
 body {
     width: 100%;
@@ -30,16 +48,6 @@ body {
     overflow: hidden;
     visibility: hidden;
 }
-
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-button { width: 0px; height: 0px; }
-::-webkit-scrollbar-thumb:hover { background: var(--scrollbar); }
-::-webkit-scrollbar-thumb:active { background: var(--scrollbar); }  
-::-webkit-scrollbar-track:hover { background: transparent; }
-::-webkit-scrollbar-track:active { background: transparent; }
-::-webkit-scrollbar-corner { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 50px; }
-::-webkit-scrollbar-track { background: transparent; border-radius: 50px; }
 
 .text {
     color: var(--text);
