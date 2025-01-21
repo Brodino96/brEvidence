@@ -6,9 +6,15 @@ Config = {
         -- 0: normal
         -- 1: small
     },
+
+    prompt = {
+        ["interact"] = "Premi ~INPUT_CONTEXT~ per interagire",
+        ["pickup"] = "Premi ~INPUT_MELEE_ATTACK_LIGHT~ per raccogliere",
+    },
     evidences = {
 
         ["molester"] = {
+            pickup = false,
             tags = nil --[[ { "user" } ]],
             prop = "prop_laptop_lester",
             coords = vec3(-1377.4250, -535.4015, 30.2113),

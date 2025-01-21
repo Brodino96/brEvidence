@@ -5,10 +5,10 @@ function OpenUI(data)
         action = "showInterface",
     })
     SetNuiFocus(true, true)
-    TriggerEvent("dpemote:stoplatestemote")
 end
 
 RegisterNUICallback("closeInterface", function (body, cb)
     cb(SetNuiFocus(false, false))
     TriggerScreenblurFadeOut(500)
+    TriggerEvent("dpemote:playemote", "stop")
 end)

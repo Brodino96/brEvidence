@@ -127,12 +127,12 @@ window.addEventListener("message", (event) => {
     if (event.data.action == "showInterface") { main.init(event.data.payload) } 
 })
 
-setTimeout(() => {
-    main.init({
-        model: "asus_rog_zephyrus_g14_2024.glb",
-        offset: { x: 0, y: -0.1, z: 0 },
-        distance: 1.5,
-        title: "Laptop di Lester the Molester",
-        description: "Questo laptop sembrerebbe appartenere ad un certo **Lester**, non sappiamo molto su di lui ma a quanto pare ha aiutato la __banda__ a fuggire dal penitenziario.",
-    })
-}, 0)
+// setTimeout(() => {
+//     main.init({
+//         model: "asus_rog_zephyrus_g14_2024.glb",
+//         offset: { x: 0, y: -0.1, z: 0 },
+//         distance: 1.5,
+//         title: "Laptop di Lester the Molester",
+//         description: "Questo laptop sembrerebbe appartenere ad un certo **Lester**, non sappiamo molto su di lui ma a quanto pare ha aiutato la __banda__ a fuggire dal penitenziario.",
+//     })
+// }, 0)
