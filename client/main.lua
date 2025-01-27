@@ -24,7 +24,7 @@ end
 ---@param prop string The prop hash
 ---@param coords vector3 The place where the prop will be spawned
 ---@return number prop The props handle
-local function createProp(prop, coords)
+function CreateProp(prop, coords)
     RequestModel(prop)
     while not HasModelLoaded(prop) do
         Wait(0)
@@ -60,7 +60,7 @@ end
 local function init()
     for _, i in pairs(Config.evidences) do
         Props[_] = i
-        Props[_].handle = createProp(i.prop, i.coords)
+        Props[_].handle = CreateProp(i.prop, i.coords)
         if checkTags(i.tags) then
             Indexes[#Indexes+1] = _
             if Config.interaction.method == "ox_target" then
