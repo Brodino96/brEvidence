@@ -7,10 +7,14 @@ Config = {
         -- 1: small
     },
 
-    prompt = {
-        ["interact"] = "Premi ~INPUT_CONTEXT~ per interagire",
-        ["pickup"] = "Premi ~INPUT_MELEE_ATTACK_LIGHT~ per raccogliere",
+    interaction = {
+        method = "ox_target", -- "ox_target" or "prompt"
+        text = {
+            ["interact"] = "Premi ~INPUT_CONTEXT~ per interagire",
+            ["pickup"] = "Premi ~INPUT_MELEE_ATTACK_LIGHT~ per raccogliere",
+        }
     },
+
     evidences = {
 
         ["molester"] = {
