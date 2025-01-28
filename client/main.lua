@@ -56,33 +56,39 @@ local function checkTags(tags)
     return false
 end
 
+---Adds the prop inteaction
+---@param index string Array's index
+local function addInteraction(index)
+    Indexes[#Indexes+1] = index
+    if Config.interaction.method == "ox_target" then
+        local options = {}
+        options[1] = {
+            label = Config.interaction.text["interact"],
+            name = "interact",
+            onSelect = function ()
+                Action.interact(Props[index])
+            end
+        }
+        if Props[index].pickup then
+            options[2] = {
+                label = Config.interaction.text["interact"],
+                name = "pickup",
+                onSelect = function ()
+                    Action.pickup(index)
+                end
+            }
+        end
+        exports["ox_target"]:addLocalEntity(Props[index].handle, options)
+    end
+end
+
 ---Starting function
 local function init()
     for _, i in pairs(Config.evidences) do
         Props[_] = i
         Props[_].handle = CreateProp(i.prop, i.coords)
         if checkTags(i.tags) then
-            Indexes[#Indexes+1] = _
-            if Config.interaction.method == "ox_target" then
-                local options = {}
-                options[1] = {
-                    label = Config.interaction.text["interact"],
-                    name = "interact",
-                    onSelect = function ()
-                        Action.interact(Props[_])
-                    end
-                }
-                if Props[_].pickup then
-                    options[2] = {
-                        label = Config.interaction.text["interact"],
-                        name = "pickup",
-                        onSelect = function ()
-                            Action.pickup(_)
-                        end
-                    }
-                end
-                exports["ox_target"]:addLocalEntity(Props[_].handle, options)
-            end
+            addInteraction(_)
         end
     end
 
@@ -168,6 +174,15 @@ AddEventHandler("br_evidence:removeProps", function (idx)
                 Indexes[k] = nil
             end
         end
+    end
+end)
+
+RegisterNetEvent("br_evidence:addProp")
+AddEventHandler("br_evidence:addProp", function (data, index)
+    Props[index] = data
+    Props[index].handle = CreateProp(data.prop, data.coords)
+    if checkTags(data.tags) then
+        addInteraction(index)
     end
 end)
 
